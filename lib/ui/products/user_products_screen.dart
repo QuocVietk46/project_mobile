@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_shoe/ui/cart/cart_screen.dart';
 
 import '../shared/app_drawer.dart';
 import 'edit_product_screen.dart';
@@ -35,6 +36,39 @@ class UserProductsScreen extends StatelessWidget {
           );
         },
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: 'Cart',
+              backgroundColor: Colors.purple,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Colors.purple,
+            ),
+
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.search),
+            //   label: 'Search',
+            //   backgroundColor: Colors.purple,
+            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline),
+              label: 'favorite',
+              backgroundColor: Colors.purple,
+            ),
+          ],
+          onTap: (index) {
+            if (index == 1) {
+              // Index 1 corresponds to the 'Home' tab
+              Navigator.of(context).pushReplacementNamed('/');
+            } else if (index == 0) {
+              // Index 0 corresponds to the 'Cart' tab
+              Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
+            }
+          }),
     );
   }
 
@@ -45,8 +79,17 @@ class UserProductsScreen extends StatelessWidget {
           itemCount: productsManager.itemCount,
           itemBuilder: (ctx, i) => Column(
             children: [
-              UserProductListTile(
-                productsManager.items[i],
+              const Divider(),
+              Table(
+                border: TableBorder.all(
+                    color: Colors.black26, width: 1, style: BorderStyle.solid),
+                children: [
+                  TableRow(children: [
+                    UserProductListTile(
+                      productsManager.items[i],
+                    ),
+                  ]),
+                ],
               ),
               const Divider(),
             ],

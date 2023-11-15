@@ -33,12 +33,7 @@ class MyApp extends StatelessWidget {
           title: 'MyShop',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            fontFamily: 'Lato',
-            colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: Colors.purple,
-            ).copyWith(
-              secondary: Colors.deepOrange,
-            ),
+            fontFamily: 'quickSand',
           ),
           home: authManager.isAuth
               ? const ProductsOverviewScreen()
@@ -68,6 +63,19 @@ class MyApp extends StatelessWidget {
                 },
               );
             }
+
+            if (settings.name == ProductDetailScreen.routeName) {
+              final productId = settings.arguments as String;
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (ctx) {
+                  return ProductDetailScreen(
+                    ctx.read<ProductsManager>().findById(productId)!,
+                  );
+                },
+              );
+            }
+
             return null;
           },
         );

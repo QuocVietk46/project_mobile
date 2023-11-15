@@ -205,7 +205,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           height: 100,
           margin: const EdgeInsets.only(top: 8, right: 10),
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.grey),
+            border: Border.all(width: 1, color: Colors.black),
           ),
           child: _imageUrlController.text.isEmpty
               ? const Text('Enter a URL')
