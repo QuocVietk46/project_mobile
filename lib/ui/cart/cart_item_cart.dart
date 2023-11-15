@@ -5,20 +5,31 @@ import '../../models/cart_item.dart';
 import '../shared/dialog_utils.dart';
 import 'cart_manager.dart';
 
-class CartItemCart extends StatelessWidget {
+class CartItemCart extends StatefulWidget {
   final String productId;
   final CartItem cartItem;
+  final VoidCallback? onIncrease;
+  final VoidCallback? onDecrease;
+  final VoidCallback? onRemove;
 
   const CartItemCart({
     required this.productId,
     required this.cartItem,
+    this.onIncrease,
+    this.onDecrease,
+    this.onRemove,
     super.key,
   });
+  @override
+  CartItemCartState createState() => CartItemCartState();
+}
 
+class CartItemCartState extends State<CartItemCart> {
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(cartItem.id),
+      key: ValueKey(widget.cartItem.id),
       background: Container(
         color: Theme.of(context).colorScheme.error,
         alignment: Alignment.centerRight,
@@ -35,36 +46,84 @@ class CartItemCart extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
-        return showConfirmDialog(
-            context, 'Do you want to remove the item from the cart?');
+        return showConfirmDialog(context, 'Xác nhận',
+            'Bạn có chắc muốn xoá sản phẩm khỏi giỏ hàng?');
       },
       onDismissed: (direction) {
-        context.read<CartManager>().removeItem(productId);
+        context.read<CartManager>().removeItem(widget.productId);
       },
       child: buildItemCart(),
     );
   }
 
   Widget buildItemCart() {
-    return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListTile(
-          leading: CircleAvatar(
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: FittedBox(
-                child: Text('\$${cartItem.price}'),
+    return InkWell(
+      onTap: () {
+        setState(() {
+          isExpanded = !isExpanded;
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              ListTile(
+                leading: Image.network(
+                  widget.cartItem.imageUrl,
+                  fit: BoxFit.cover,
+                  width: 60,
+                  height: 60,
+                ),
+                title: Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Text(
+                    widget.cartItem.title,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+                subtitle: Text(
+                  'Total: \$${(widget.cartItem.price * widget.cartItem.quantity)}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                trailing: Text('${widget.cartItem.quantity} x'),
               ),
-            ),
+              if (isExpanded)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () {
+                        setState(() {
+                          if (widget.cartItem.quantity > 1) {
+                            context
+                                .read<CartManager>()
+                                .decreaseItem(widget.productId);
+                          }
+                        });
+                      },
+                    ),
+                    Text('${widget.cartItem.quantity}'),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          context
+                              .read<CartManager>()
+                              .increaseItem(widget.productId);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+            ],
           ),
-          title: Text(cartItem.title),
-          subtitle: Text('Total: \$${(cartItem.price * cartItem.quantity)}'),
-          trailing: Text('${cartItem.quantity} x'),
         ),
       ),
     );

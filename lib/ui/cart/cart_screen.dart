@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_shoe/ui/orders/orders_manager.dart';
 import 'package:provider/provider.dart';
 
+import 'package:shop_shoe/ui/checkout/checkout_screen.dart';
 import 'cart_manager.dart';
 import 'cart_item_cart.dart';
 
@@ -17,40 +17,85 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Cart'),
       ),
-      body: Column(children: <Widget>[
-        buildCartSummary(cart, context),
-        const SizedBox(height: 10),
-        Expanded(
-          child: buildCartDetails(cart),
-        ),
-      ]),
+      body: Column(
+        children: <Widget>[
+          buildHeaderCart(),
+          const SizedBox(height: 10),
+          Expanded(
+            child: buildCartDetails(cart),
+          ),
+          const SizedBox(height: 10),
+          buildCartSummary(cart, context),
+          const SizedBox(height: 10),
+          buildOrderButton(cart, context),
+        ],
+      ),
+    );
+  }
+
+  Widget buildHeaderCart() {
+    return Container(
+      margin: const EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          const Text(
+            'Giỏ hàng',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Spacer(),
+          Consumer(
+            builder: (context, value, child) => InkWell(
+              onTap: () => context.read<CartManager>().clear(),
+              child: const Icon(
+                size: 30,
+                Icons.delete_outline_outlined,
+                color: Color(0xffE65829), // Màu icon
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
   Widget buildCartDetails(CartManager cart) {
-    return ListView(
-      children: cart.productEntries
-          .map(
-            (entry) => CartItemCart(
-              productId: entry.key,
-              cartItem: entry.value,
+    return cart.productCount == 0
+        ? const Center(
+            child: Text(
+              'Chưa có sản phẩm nào trong giỏ hàng',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           )
-          .toList(),
-    );
+        : ListView(
+            children: cart.productEntries
+                .map(
+                  (entry) => CartItemCart(
+                    productId: entry.key,
+                    cartItem: entry.value,
+                  ),
+                )
+                .toList(),
+          );
   }
 
   Widget buildCartSummary(CartManager cart, BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(15),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Padding(
           padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text(
-                'Total',
-                style: TextStyle(fontSize: 20),
+              Text(
+                'Số lượng: ${cart.productCount}',
+                style: const TextStyle(fontSize: 16),
               ),
               const Spacer(),
               Chip(
@@ -62,25 +107,32 @@ class CartScreen extends StatelessWidget {
                 ),
                 backgroundColor: Theme.of(context).primaryColor,
               ),
-              TextButton(
-                onPressed: cart.totalAmount <= 0
-                    ? null
-                    : () {
-                        context.read<OrdersManager>().addOrder(
-                              cart.products,
-                              cart.totalAmount,
-                            );
-                        cart.clear();
-                      },
-                style: TextButton.styleFrom(
-                  textStyle: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                child: const Text('ORDER NOW'),
-              ),
             ],
           )),
+    );
+  }
+
+  Widget buildOrderButton(CartManager cart, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(15),
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Color(0xffE65829),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: TextButton(
+        onPressed: cart.totalAmount <= 0
+            ? null
+            : () {
+                Navigator.of(context).pushNamed(CheckoutScreen.routeName);
+              },
+        child: const Text(
+          'Đặt hàng',
+          style:
+              TextStyle(fontSize: 20, color: Color.fromARGB(255, 33, 25, 25)),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

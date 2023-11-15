@@ -106,7 +106,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   void _showFullScreenImage(String imageUrl) {
-    print(imageUrl);
     showDialog(
       context: context,
       builder: (context) {

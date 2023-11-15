@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TopRightBadge extends StatelessWidget {
   const TopRightBadge({
-    Key? key,
+    super.key,
     required this.child,
     required this.data,
     this.color,

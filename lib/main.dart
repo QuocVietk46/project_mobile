@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
+import 'package:shop_shoe/ui/checkout/checkout_screen.dart';
 import 'package:shop_shoe/ui/products/edit_product_screen.dart';
 import 'ui/screens.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           title: 'MyShop',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            fontFamily: 'Lato',
+            // fontFamily: 'Poppins',
             colorScheme: ColorScheme.fromSwatch(
               primarySwatch: Colors.purple,
             ).copyWith(
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
             CartScreen.routeName: (ctx) => const CartScreen(),
             OrdersScreen.routeName: (ctx) => const OrdersScreen(),
             UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+            CheckoutScreen.routeName: (ctx) => const CheckoutScreen(),
           },
           onGenerateRoute: (settings) {
             if (settings.name == EditProductScreen.routeName) {
