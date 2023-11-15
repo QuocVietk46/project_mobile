@@ -22,7 +22,7 @@ class AppBanner extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             blurRadius: 8,
-            color: Colors.black26,
+            color: Colors.black,
             offset: Offset(0, 2),
           )
         ],
