@@ -81,6 +81,19 @@ class MyApp extends StatelessWidget {
                 },
               );
             }
+
+            if (settings.name == ProductDetailScreen.routeName) {
+              final productId = settings.arguments as String;
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (ctx) {
+                  return ProductDetailScreen(
+                    ctx.read<ProductsManager>().findById(productId)!,
+                  );
+                },
+              );
+            }
+
             return null;
           },
         );

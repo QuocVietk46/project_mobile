@@ -20,6 +20,8 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
   final _showOnlyFavorites = ValueNotifier<bool>(false);
   late Future<void> _fetchProducts;
 
+  get isHomePageSelected => null;
+
   @override
   void initState() {
     super.initState();
@@ -29,31 +31,83 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('MyShop'),
-          actions: <Widget>[
-            buildProductFilterMenu(),
-            buildShoppingCartIcon(),
-          ],
-        ),
-        drawer: const AppDrawer(),
-        body: FutureBuilder(
-          future: _fetchProducts,
-          builder: (ctx, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return ValueListenableBuilder<bool>(
-                valueListenable: _showOnlyFavorites,
-                builder: (ctx, onlyFavorites, child) {
-                  return ProductsGrid(onlyFavorites);
-                },
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
+      appBar: AppBar(
+        actions: <Widget>[
+          // buildProductFilterMenu(),
+          // buildShoppingCartIcon(),
+          buildAvt(context),
+        ],
+      ),
+      drawer: const AppDrawer(),
+      body: FutureBuilder(
+        future: _fetchProducts,
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return ValueListenableBuilder<bool>(
+              valueListenable: _showOnlyFavorites,
+              builder: (ctx, onlyFavorites, child) {
+                return ProductsGrid(onlyFavorites);
+              },
             );
-          },
-        ));
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: 'Cart',
+              backgroundColor: Colors.purple,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Colors.purple,
+            ),
+
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.search),
+            //   label: 'Search',
+            //   backgroundColor: Colors.purple,
+            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline),
+              label: 'favorite',
+              backgroundColor: Colors.purple,
+            ),
+          ],
+          onTap: (index) {
+            if (index == 1) {
+              // Index 1 corresponds to the 'Home' tab
+              Navigator.of(context).pushReplacementNamed('/');
+            } else if (index == 0) {
+              // Index 0 corresponds to the 'Cart' tab
+              Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
+            }
+          }),
+    );
   }
+
+  Widget buildHomeIcon() {
+    return IconButton(
+      icon: const Icon(Icons.home),
+      onPressed: () {
+        Navigator.of(context).pushReplacementNamed('/');
+      },
+    );
+  }
+
+  // Widget buildCartIcon() {
+  //   return IconButton(
+  //     icon: const Icon(Icons.shopping_cart),
+  //     onPressed: () {
+  //       Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
+  //     },
+  //   );
+  // }
 
   Widget buildShoppingCartIcon() {
     return Consumer<CartManager>(
@@ -70,6 +124,13 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget buildAvt(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.account_circle),
+      onPressed: () {},
     );
   }
 

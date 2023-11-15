@@ -59,6 +59,41 @@ class CartScreen extends StatelessWidget {
           )
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+            backgroundColor: Colors.purple,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.purple,
+          ),
+
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.search),
+          //   label: 'Search',
+          //   backgroundColor: Colors.purple,
+          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outline),
+            label: 'favorite',
+            backgroundColor: Colors.purple,
+          ),
+        ],
+        onTap: (index) {
+          if (index == 1) {
+            // Index 1 corresponds to the 'Home' tab
+            Navigator.of(context).pushReplacementNamed('/');
+            Colors.purple;
+          } else if (index == 0) {
+            // Index 0 corresponds to the 'Cart' tab
+            Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
+          }
+        },
+      ),
     );
   }
 
