@@ -26,15 +26,26 @@ class MyApp extends StatelessWidget {
             return productsManager;
           },
         ),
-        ChangeNotifierProvider(create: (ctx) => CartManager()),
-        ChangeNotifierProvider(create: (ctx) => OrdersManager()),
+        ChangeNotifierProxyProvider<AuthManager, CartManager>(
+          create: (ctx) => CartManager(),
+          update: (ctx, authManager, cartManager) {
+            cartManager!.authToken = authManager.authToken;
+            return cartManager;
+          },
+        ),
+        ChangeNotifierProxyProvider<AuthManager, OrdersManager>(
+          create: (ctx) => OrdersManager(),
+          update: (ctx, authManager, ordersManager) {
+            ordersManager!.authToken = authManager.authToken;
+            return ordersManager;
+          },
+        ),
       ],
       child: Consumer<AuthManager>(builder: (ctx, authManager, child) {
         return MaterialApp(
           title: 'MyShop',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            // fontFamily: 'Poppins',
             colorScheme: ColorScheme.fromSwatch(
               primarySwatch: Colors.purple,
             ).copyWith(

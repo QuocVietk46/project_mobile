@@ -33,8 +33,6 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          // buildProductFilterMenu(),
-          // buildShoppingCartIcon(),
           buildAvt(context),
         ],
       ),
@@ -113,7 +111,7 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
     return Consumer<CartManager>(
       builder: (ctx, cartManager, child) {
         return TopRightBadge(
-          data: cartManager.productCount,
+          data: cartManager.itemCount,
           child: IconButton(
             icon: const Icon(
               Icons.shopping_cart,

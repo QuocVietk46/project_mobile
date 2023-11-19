@@ -4,9 +4,9 @@ class AuthToken {
   final DateTime _expiryDate;
 
   AuthToken({
-    token,
-    userId,
-    expiryDate,
+    required token,
+    required userId,
+    required expiryDate,
   })  : _token = token,
         _userId = userId,
         _expiryDate = expiryDate;

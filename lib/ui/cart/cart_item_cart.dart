@@ -50,7 +50,7 @@ class CartItemCartState extends State<CartItemCart> {
             'Bạn có chắc muốn xoá sản phẩm khỏi giỏ hàng?');
       },
       onDismissed: (direction) {
-        context.read<CartManager>().removeItem(widget.productId);
+        context.read<CartManager>().removeSingleItem(widget.cartItem.id);
       },
       child: buildItemCart(),
     );
@@ -104,7 +104,7 @@ class CartItemCartState extends State<CartItemCart> {
                           if (widget.cartItem.quantity > 1) {
                             context
                                 .read<CartManager>()
-                                .decreaseItem(widget.productId);
+                                .decreaseItem(widget.cartItem.id);
                           }
                         });
                       },
@@ -116,7 +116,7 @@ class CartItemCartState extends State<CartItemCart> {
                         setState(() {
                           context
                               .read<CartManager>()
-                              .increaseItem(widget.productId);
+                              .increaseItem(widget.cartItem.id);
                         });
                       },
                     ),

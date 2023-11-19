@@ -155,6 +155,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
+  // Future addToCart(Product product) async {
+  //   final cartManager = context.read<CartManager>();
+  //   try {
+  //     cartManager.addItem(product);
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
+
   Widget _buildAddToCartButton(context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),

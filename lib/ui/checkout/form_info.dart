@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_shoe/ui/cart/cart_manager.dart';
 
 import 'package:shop_shoe/ui/orders/orders_manager.dart';
-import 'package:shop_shoe/ui/shared/dialog_utils.dart';
+// import 'package:shop_shoe/ui/shared/dialog_utils.dart';
 
 class FormInfoCheckout extends StatefulWidget {
   const FormInfoCheckout({super.key});
@@ -96,7 +96,7 @@ class MyFormState extends State<FormInfoCheckout> {
 
                     context.read<OrdersManager>().addOrder(
                         context,
-                        context.read<CartManager>().products,
+                        context.read<CartManager>().items,
                         context.read<CartManager>().totalAmount,
                         name,
                         address,

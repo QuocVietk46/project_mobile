@@ -12,52 +12,21 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<CartManager>();
+    final fetchCartItems = context.read<CartManager>().fetchCartItems();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Cart'),
       ),
-      body: Column(
-        children: <Widget>[
-          buildHeaderCart(),
-          const SizedBox(height: 10),
-          Expanded(
-            child: buildCartDetails(cart),
-          ),
-          const SizedBox(height: 10),
-          buildCartSummary(cart, context),
-          const SizedBox(height: 10),
-          buildOrderButton(cart, context),
-        ],
-      ),
-    );
-  }
-
-  Widget buildHeaderCart() {
-    return Container(
-      margin: const EdgeInsets.all(15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const Text(
-            'Giỏ hàng',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Spacer(),
-          Consumer(
-            builder: (context, value, child) => InkWell(
-              onTap: () => context.read<CartManager>().clear(),
-              child: const Icon(
-                size: 30,
-                Icons.delete_outline_outlined,
-                color: Color(0xffE65829), // Màu icon
-              ),
-            ),
-          )
-        ],
+      body: FutureBuilder(
+        future: fetchCartItems,
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return buildCart(context);
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -71,12 +40,6 @@ class CartScreen extends StatelessWidget {
             label: 'Home',
             backgroundColor: Colors.purple,
           ),
-
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.search),
-          //   label: 'Search',
-          //   backgroundColor: Colors.purple,
-          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_outline),
             label: 'favorite',
@@ -97,40 +60,87 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCartDetails(CartManager cart) {
-    return cart.productCount == 0
-        ? const Center(
-            child: Text(
-              'Chưa có sản phẩm nào trong giỏ hàng',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+  Widget buildCart(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        buildHeaderCart(),
+        const SizedBox(height: 10),
+        Expanded(
+          child: buildCartDetails(),
+        ),
+        const SizedBox(height: 10),
+        buildCartSummary(),
+        const SizedBox(height: 10),
+        buildOrderButton(),
+      ],
+    );
+  }
+
+  Widget buildHeaderCart() {
+    return Container(
+      margin: const EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          const Text(
+            'Giỏ hàng',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Spacer(),
+          Consumer<CartManager>(
+            builder: (context, cart, child) => InkWell(
+              onTap: () => cart.clear(),
+              child: const Icon(
+                size: 30,
+                Icons.delete_outline_outlined,
+                color: Color(0xffE65829), // Màu icon
               ),
             ),
           )
-        : ListView(
-            children: cart.productEntries
-                .map(
-                  (entry) => CartItemCart(
-                    productId: entry.key,
-                    cartItem: entry.value,
-                  ),
-                )
-                .toList(),
-          );
+        ],
+      ),
+    );
   }
 
-  Widget buildCartSummary(CartManager cart, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-      child: Padding(
+  Widget buildCartDetails() {
+    return Consumer<CartManager>(
+      builder: (context, cart, child) => cart.itemCount == 0
+          ? const Center(
+              child: Text(
+                'Giỏ hàng rỗng',
+                style: TextStyle(fontSize: 20),
+              ),
+            )
+          : Expanded(
+              child: ListView(
+                children: cart.items
+                    .map(
+                      (item) => CartItemCart(
+                        productId: item.id,
+                        cartItem: item,
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+    );
+  }
+
+  Widget buildCartSummary() {
+    return Consumer<CartManager>(
+      builder: (context, cart, child) => Card(
+        margin: const EdgeInsets.all(15),
+        child: Padding(
           padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                'Số lượng: ${cart.productCount}',
-                style: const TextStyle(fontSize: 16),
+              const Text(
+                'Tổng cộng:',
+                style: TextStyle(fontSize: 16),
               ),
               const Spacer(),
               Chip(
@@ -143,31 +153,40 @@ class CartScreen extends StatelessWidget {
                 backgroundColor: Theme.of(context).primaryColor,
               ),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget buildOrderButton(CartManager cart, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(15),
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xffE65829),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: TextButton(
-        onPressed: cart.totalAmount <= 0
-            ? null
-            : () {
+  Widget buildOrderButton() {
+    return Consumer<CartManager>(
+      builder: (context, cart, child) => cart.itemCount == 0
+          ? const SizedBox.shrink()
+          : InkWell(
+              onTap: () {
                 Navigator.of(context).pushNamed(CheckoutScreen.routeName);
               },
-        child: const Text(
-          'Đặt hàng',
-          style:
-              TextStyle(fontSize: 20, color: Color.fromARGB(255, 33, 25, 25)),
-          textAlign: TextAlign.center,
-        ),
-      ),
+              child: Container(
+                margin: const EdgeInsets.all(15),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color(0xffE65829),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CheckoutScreen.routeName);
+                  },
+                  child: const Text(
+                    'Đặt hàng',
+                    style: TextStyle(
+                        fontSize: 20, color: Color.fromARGB(255, 33, 25, 25)),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }

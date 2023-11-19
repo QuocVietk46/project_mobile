@@ -42,4 +42,29 @@ class OrderItem {
       dateTime: dateTime ?? this.dateTime,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'address': address,
+      'phone': phone,
+      'name': name,
+      'amount': amount,
+      'products': products.map((e) => e.toJson()).toList(),
+      'dateTime': dateTime.toIso8601String(),
+    };
+  }
+
+  static OrderItem fromJson(Map<String, dynamic> json) {
+    return OrderItem(
+      id: json['id'],
+      address: json['address'],
+      phone: json['phone'],
+      name: json['name'],
+      amount: json['amount'],
+      products: (json['products'] as List<dynamic>)
+          .map((e) => CartItem.fromJson(e))
+          .toList(),
+      dateTime: DateTime.parse(json['dateTime']),
+    );
+  }
 }
