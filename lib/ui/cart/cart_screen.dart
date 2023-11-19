@@ -15,7 +15,9 @@ class CartScreen extends StatelessWidget {
     final cart = context.watch<CartManager>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Cart'),
+        actions: <Widget>[
+          buildAvt(context),
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -30,6 +32,45 @@ class CartScreen extends StatelessWidget {
           buildOrderButton(cart, context),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+            backgroundColor: Colors.purple,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.purple,
+          ),
+
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.search),
+          //   label: 'Search',
+          //   backgroundColor: Colors.purple,
+          // ),
+        ],
+        onTap: (index) {
+          if (index == 1) {
+            // Index 1 corresponds to the 'Home' tab
+            Navigator.of(context).pushReplacementNamed('/');
+            Colors.purple;
+          } else if (index == 0) {
+            // Index 0 corresponds to the 'Cart' tab
+            Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
+          } else if (index == 2) {
+            Navigator.of(context).pushReplacementNamed('/');
+          }
+        },
+      ),
+    );
+  }
+
+  Widget buildAvt(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.account_circle),
+      onPressed: () {},
     );
   }
 
@@ -58,41 +99,6 @@ class CartScreen extends StatelessWidget {
             ),
           )
         ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-            backgroundColor: Colors.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.purple,
-          ),
-
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.search),
-          //   label: 'Search',
-          //   backgroundColor: Colors.purple,
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: 'favorite',
-            backgroundColor: Colors.purple,
-          ),
-        ],
-        onTap: (index) {
-          if (index == 1) {
-            // Index 1 corresponds to the 'Home' tab
-            Navigator.of(context).pushReplacementNamed('/');
-            Colors.purple;
-          } else if (index == 0) {
-            // Index 0 corresponds to the 'Cart' tab
-            Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
-          }
-        },
       ),
     );
   }

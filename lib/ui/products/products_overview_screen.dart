@@ -33,7 +33,7 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          // buildProductFilterMenu(),
+          buildProductFilterMenu(),
           // buildShoppingCartIcon(),
           buildAvt(context),
         ],
@@ -58,32 +58,21 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
       bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
-              backgroundColor: Colors.purple,
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
               backgroundColor: Colors.purple,
             ),
-
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.search),
-            //   label: 'Search',
-            //   backgroundColor: Colors.purple,
-            // ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline),
-              label: 'favorite',
+              icon: Icon(Icons.shopping_cart),
+              label: 'Cart',
               backgroundColor: Colors.purple,
             ),
           ],
           onTap: (index) {
-            if (index == 1) {
+            if (index == 0) {
               // Index 1 corresponds to the 'Home' tab
               Navigator.of(context).pushReplacementNamed('/');
-            } else if (index == 0) {
+            } else if (index == 1) {
               // Index 0 corresponds to the 'Cart' tab
               Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
             }
@@ -119,7 +108,7 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
               Icons.shopping_cart,
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed(CartScreen.routeName);
+              Navigator.of(context).pushReplacementNamed('/');
             },
           ),
         );
@@ -137,11 +126,13 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget buildProductFilterMenu() {
     return PopupMenuButton(
       onSelected: (FilterOptions selectedValue) {
+        // setState(() {
         if (selectedValue == FilterOptions.favorites) {
           _showOnlyFavorites.value = true;
         } else {
           _showOnlyFavorites.value = false;
         }
+        //} );
       },
       icon: const Icon(
         Icons.more_vert,
@@ -149,11 +140,11 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
       itemBuilder: (ctx) => [
         const PopupMenuItem(
           value: FilterOptions.favorites,
-          child: Text('Only Favorite'),
+          child: Text('Chỉ chọn yêu thích'),
         ),
         const PopupMenuItem(
           value: FilterOptions.all,
-          child: Text('Show All'),
+          child: Text('Xem tất cả'),
         )
       ],
     );
