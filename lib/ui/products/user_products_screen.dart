@@ -48,17 +48,6 @@ class UserProductsScreen extends StatelessWidget {
               label: 'Home',
               backgroundColor: Colors.purple,
             ),
-
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.search),
-            //   label: 'Search',
-            //   backgroundColor: Colors.purple,
-            // ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline),
-              label: 'favorite',
-              backgroundColor: Colors.purple,
-            ),
           ],
           onTap: (index) {
             if (index == 1) {
