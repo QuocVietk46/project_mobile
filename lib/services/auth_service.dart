@@ -35,6 +35,7 @@ class AuthService {
         ),
       );
       final responseJson = json.decode(response.body);
+      // print(responseJson);
       if (responseJson['error'] != null) {
         throw HttpException.firebase(responseJson['error']['message']);
       }

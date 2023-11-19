@@ -89,20 +89,11 @@ class _ProductOverviewScreenState extends State<ProductsOverviewScreen> {
     );
   }
 
-  // Widget buildCartIcon() {
-  //   return IconButton(
-  //     icon: const Icon(Icons.shopping_cart),
-  //     onPressed: () {
-  //       Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
-  //     },
-  //   );
-  // }
-
   Widget buildShoppingCartIcon() {
     return Consumer<CartManager>(
       builder: (ctx, cartManager, child) {
         return TopRightBadge(
-          data: cartManager.productCount,
+          data: cartManager.itemCount,
           child: IconButton(
             icon: const Icon(
               Icons.shopping_cart,
