@@ -15,6 +15,10 @@ class AuthManager with ChangeNotifier {
     return authToken != null && authToken!.isValid;
   }
 
+  String get userId {
+    return authToken!.userId;
+  }
+
   AuthToken? get authToken {
     return _authToken;
   }

@@ -14,19 +14,18 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final fetchCartItems = context.read<CartManager>().fetchCartItems();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Cart'),
-      ),
-      body: FutureBuilder(
-        future: fetchCartItems,
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return buildCart(context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+      body: SafeArea(
+        child: FutureBuilder(
+          future: fetchCartItems,
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return buildCart(context);
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -38,11 +37,6 @@ class CartScreen extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: 'favorite',
             backgroundColor: Colors.purple,
           ),
         ],

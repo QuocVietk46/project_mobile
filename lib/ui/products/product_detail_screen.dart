@@ -17,18 +17,9 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  late String selectedImageUrl;
-  late List<String> imageUrls;
-
   @override
   void initState() {
     super.initState();
-    selectedImageUrl = 'https://placekitten.com/300/200';
-    imageUrls = [
-      'https://placekitten.com/300/200',
-      'https://placekitten.com/301/200',
-      'https://placekitten.com/302/200',
-    ];
   }
 
   @override
@@ -64,55 +55,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Widget _buildProductImage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Hình ảnh chính
-        GestureDetector(
-          onTap: () {
-            // Mở hình ảnh chính lớn khi nhấp vào
-            _showFullScreenImage(selectedImageUrl);
-          },
-          child: Image.network(
-            selectedImageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-        // Danh sách hình ảnh phụ
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.center, // Căn giữ theo trục chính
-          children: imageUrls.map((imageUrl) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedImageUrl = imageUrl;
-                  });
-                },
-                child: Image.network(
-                  imageUrl,
-                  width: 80.0,
-                  height: 80.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
-  void _showFullScreenImage(String imageUrl) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          child: Image.network(imageUrl),
-        );
-      },
+    return SizedBox(
+      child: Image.network(
+        widget.product.imageUrl,
+        fit: BoxFit.cover,
+      ),
     );
   }
 
@@ -154,15 +101,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
     );
   }
-
-  // Future addToCart(Product product) async {
-  //   final cartManager = context.read<CartManager>();
-  //   try {
-  //     cartManager.addItem(product);
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
 
   Widget _buildAddToCartButton(context) {
     return Padding(

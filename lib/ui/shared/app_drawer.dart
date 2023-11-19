@@ -14,13 +14,13 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            title: const Text('Hello Friend!'),
+            title: const Text('Xin chào!'),
             automaticallyImplyLeading: false,
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.shop),
-            title: const Text('Shop'),
+            title: const Text('Trang chủ'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
@@ -28,25 +28,29 @@ class AppDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.payment),
-            title: const Text('Orders'),
+            title: const Text('Đơn hàng'),
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(OrdersScreen.routeName);
             },
           ),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.edit),
-            title: const Text('Manage Products'),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(UserProductsScreen.routeName);
-            },
-          ),
-          const Divider(),
+          if (context.read<AuthManager>().userId ==
+              'QF7iMZw74YZPROePhXpvlvEyg1q2')
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Manage Products'),
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(UserProductsScreen.routeName);
+              },
+            ),
+          if (context.read<AuthManager>().userId ==
+              'QF7iMZw74YZPROePhXpvlvEyg1q2')
+            const Divider(),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
+            title: const Text('Đăng xuất'),
             onTap: () {
               Navigator.of(context)
                 ..pop()
