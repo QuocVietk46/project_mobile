@@ -24,6 +24,7 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/img/trees-background-44.jpg
   fonts:
     - family: Lato
       fonts:

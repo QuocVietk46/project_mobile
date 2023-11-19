@@ -16,15 +16,11 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0, 1],
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/img/trees-background-44.jpg'), // Replace with your image path
+                fit: BoxFit.cover,
               ),
             ),
           ),

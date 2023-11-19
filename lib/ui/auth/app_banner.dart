@@ -15,23 +15,22 @@ class AppBanner extends StatelessWidget {
         vertical: 8.0,
         horizontal: 94.0,
       ),
-      transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.deepOrange.shade900,
+        color: Colors.blueGrey.shade100,
         boxShadow: const [
           BoxShadow(
             blurRadius: 8,
-            color: Colors.black,
+            color: Colors.blue,
             offset: Offset(0, 2),
           )
         ],
       ),
       child: Text(
-        'MyShop',
+        'Shop Shoe',
         style: TextStyle(
           color: Theme.of(context).textTheme.titleLarge?.color,
-          fontSize: 50,
+          fontSize: 30,
           fontFamily: 'Anton',
           fontWeight: FontWeight.normal,
         ),
