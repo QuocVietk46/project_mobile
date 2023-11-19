@@ -4,14 +4,7 @@ import '../../models/cart_item.dart';
 import '../../models/product.dart';
 
 class CartManager with ChangeNotifier {
-  final Map<String, CartItem> _items = {
-    'p1': CartItem(
-      id: 'c1',
-      title: 'Red Shirt',
-      price: 29.99,
-      quantity: 2,
-    ),
-  };
+  final Map<String, CartItem> _items = {};
 
   int get productCount {
     return _items.length;
@@ -48,6 +41,7 @@ class CartManager with ChangeNotifier {
           title: product.title,
           price: product.price,
           quantity: 1,
+          imageUrl: product.imageUrl,
         ),
       );
     }
@@ -60,6 +54,36 @@ class CartManager with ChangeNotifier {
   }
 
   void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      return;
+    }
+    if (_items[productId]?.quantity as num > 1) {
+      _items.update(
+        productId,
+        (existingCartItem) => existingCartItem.copyWith(
+          quantity: existingCartItem.quantity - 1,
+        ),
+      );
+    } else {
+      _items.remove(productId);
+    }
+    notifyListeners();
+  }
+
+  void increaseItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      return;
+    }
+    _items.update(
+      productId,
+      (existingCartItem) => existingCartItem.copyWith(
+        quantity: existingCartItem.quantity + 1,
+      ),
+    );
+    notifyListeners();
+  }
+
+  void decreaseItem(String productId) {
     if (!_items.containsKey(productId)) {
       return;
     }

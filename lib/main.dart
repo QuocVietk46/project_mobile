@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
+import 'package:shop_shoe/ui/checkout/checkout_screen.dart';
 import 'package:shop_shoe/ui/products/edit_product_screen.dart';
 import 'ui/screens.dart';
 
@@ -33,7 +34,12 @@ class MyApp extends StatelessWidget {
           title: 'MyShop',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            fontFamily: 'quickSand',
+            // fontFamily: 'Poppins',
+            colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: Colors.purple,
+            ).copyWith(
+              secondary: Colors.deepOrange,
+            ),
           ),
           home: authManager.isAuth
               ? const ProductsOverviewScreen()
@@ -49,6 +55,7 @@ class MyApp extends StatelessWidget {
             CartScreen.routeName: (ctx) => const CartScreen(),
             OrdersScreen.routeName: (ctx) => const OrdersScreen(),
             UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+            CheckoutScreen.routeName: (ctx) => const CheckoutScreen(),
           },
           onGenerateRoute: (settings) {
             if (settings.name == EditProductScreen.routeName) {
@@ -59,6 +66,17 @@ class MyApp extends StatelessWidget {
                     productId != null
                         ? ctx.read<ProductsManager>().findById(productId)
                         : null,
+                  );
+                },
+              );
+            }
+            if (settings.name == ProductDetailScreen.routeName) {
+              final productId = settings.arguments as String;
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (ctx) {
+                  return ProductDetailScreen(
+                    ctx.read<ProductsManager>().findById(productId)!,
                   );
                 },
               );
