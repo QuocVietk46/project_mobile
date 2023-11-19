@@ -78,6 +78,7 @@ class _AuthCardState extends State<AuthCard> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Card(
+      color: Colors.blueGrey.withOpacity(0.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -124,7 +125,8 @@ class _AuthCardState extends State<AuthCard> {
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         textStyle: TextStyle(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorLight,
+          fontSize: 20,
         ),
       ),
       child: Text('${_authMode == AuthMode.login ? 'Đăng ký' : 'Đăng nhập'} '),
@@ -152,6 +154,7 @@ class _AuthCardState extends State<AuthCard> {
     return TextFormField(
       enabled: _authMode == AuthMode.signup,
       decoration: const InputDecoration(labelText: 'Confirm Password'),
+      style: const TextStyle(color: Colors.white),
       obscureText: true,
       validator: _authMode == AuthMode.signup
           ? (value) {
@@ -167,6 +170,7 @@ class _AuthCardState extends State<AuthCard> {
   Widget _buildPasswordField() {
     return TextFormField(
       decoration: const InputDecoration(labelText: 'Mật khẩu'),
+      style: const TextStyle(color: Colors.white),
       obscureText: true,
       controller: _passwordController,
       validator: (value) {
@@ -184,6 +188,7 @@ class _AuthCardState extends State<AuthCard> {
   Widget _buildEmailField() {
     return TextFormField(
       decoration: const InputDecoration(labelText: 'E-Mail'),
+      style: const TextStyle(color: Colors.white),
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         if (value!.isEmpty || !value.contains('@')) {
